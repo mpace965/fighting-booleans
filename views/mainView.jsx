@@ -1,7 +1,8 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import LoginView from './loginView';
+import Header from './components/header';
 
 class Wrapper extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class Wrapper extends React.Component {
 
     return (
       <div>
+        <Header />
         <ActiveView setActiveView={this.setActiveView} activeViewState={this.state.activeViewState} />
       </div>
     );

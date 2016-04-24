@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 class LoginView extends React.Component {
   render() {
