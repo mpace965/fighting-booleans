@@ -32,6 +32,7 @@ class AllBooleansView extends React.Component {
         url: '/api/booleans/',
         dataType: 'json',
         cache: false,
+        data: {userId: 0},
         success: function(data) {
           this.setState({booleans: data.booleans});
         }.bind(this),
