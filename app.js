@@ -38,7 +38,18 @@ app.listen(appEnv.port, '0.0.0.0', function() {
   console.log("server starting on " + appEnv.url);
 });
 
+var mongo = {
+  "url" : "mongodb://localhost:" + appEnv.port + "/db"
+};
+if (appEnv.VCAP_SERVICES) {
+  var env = JSON.parse(appEnv.VCAP_SERVICES);
+  if (env['mongodb-2.4']) {
+    mongo.url = env['mongodb-2.4'][0]['credentials']['uri'];
+  }
+}
+
 // mongodb connection
+console.log("mongodb url = " + mongo.url);
 var url = 'mongodb://1f71ac31-c4f7-495a-be66-54a2b8759702:0ca3ef65-12c9-4855-998d-5470fdc00cea@192.155.243.23:10120/db';
 MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
