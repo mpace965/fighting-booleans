@@ -36,7 +36,7 @@ app.listen(appEnv.port, '0.0.0.0', function() {
 
 var FACEBOOK_APP_ID = 265118990493490;
 var FACEBOOK_APP_SECRET = "21acbc29fac79d69188785a6f36b3b6c";
-var profile;
+var profile1;
 
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
@@ -46,6 +46,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate(function(err, user) {
+    	profile1 = profile;
       if (err) { return done(err); }
       done(null, user);
     });
@@ -67,5 +68,5 @@ app.get('/auth/facebook/callback',
                                       failureRedirect: '/login' }));
 
 app.get('/print', function () {
-  console.log(profile);
+  console.log(profile1);
 });
