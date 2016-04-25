@@ -75,10 +75,13 @@ class BooleanView extends React.Component {
     this.closeModal = this.closeModal.bind(this);
 
     this.state = {
-      name: "",
-      alive: true,
-      streaks: {},
-      stats: [],
+      boolean: {
+        name: "",
+        id: "",
+        alive: true,
+        streaks: {},
+        stats: []
+      },
       error: false,
       showModal: false
     };
@@ -95,13 +98,14 @@ class BooleanView extends React.Component {
         cache: false,
         data: {userId: 0},
         success: function(data) {
-          this.setState({name: data.name, streaks: data.streaks, stats: data.stats, alive: data.alive});
+          this.setState({boolean: data});
         }.bind(this),
         error: function(xhr, status, err) {
-          this.setState({name: "Matt",
+          var bool = {name: "Matt",
             streaks: {wins: 2, losses: 1, streak: 1},
             stats: [{name: "strong", has: false}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true});
+            alive: true};
+          this.setState({boolean: bool});
           // this.setState({error: true});
           // console.error('/api/boolean/' + this.props.params.id, status, err.toString());
         }.bind(this)
@@ -122,12 +126,11 @@ class BooleanView extends React.Component {
     }
 
     var context = this;
-
-    var stats = this.state.stats.map(function(stat) {
+    var stats = this.state.boolean.stats.map(function(stat) {
       return <StatRow
         key={stat.name}
         stat={stat}
-        alive={context.state.alive}
+        alive={context.state.boolean.alive}
         id={context.props.params.id}
         showModal={context.showModal} />;
     });
@@ -136,14 +139,14 @@ class BooleanView extends React.Component {
       <div>
         <Grid>
           <Col>
-            <PageHeader>{this.state.name}</PageHeader>
+            <PageHeader>{this.state.boolean.name}</PageHeader>
 
             <Row>
               <Col lg={8}>
                 <Panel>
-                  <p>Wins: {this.state.streaks.wins}</p>
-                  <p>Losses: {this.state.streaks.losses}</p>
-                  <p>Current Win Streak: {this.state.streaks.streak}</p>
+                  <p>Wins: {this.state.boolean.streaks.wins}</p>
+                  <p>Losses: {this.state.boolean.streaks.losses}</p>
+                  <p>Current Win Streak: {this.state.boolean.streaks.streak}</p>
                 </Panel>
               </Col>
               <Col lg={4}>

@@ -6,6 +6,7 @@ import Header from './components/header';
 import LoginView from './loginView';
 import AllBooleansView from './allBooleansView';
 import BooleanView from './booleanView';
+import FightView from './fightView';
 
 class Wrapper extends React.Component {
   render() {
@@ -24,6 +25,7 @@ ReactDOM.render((
       <IndexRoute component={LoginView} />
       <Route path="booleans" component={AllBooleansView} />
       <Route path="boolean/:id" component={BooleanView} />
+      <Route path="fight/:opponentId" component={FightView} />
     </Route>
   </Router>
 ), document.getElementById('wrapper'));

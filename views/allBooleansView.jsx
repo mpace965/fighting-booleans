@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Row, Button, PageHeader } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router';
 
 class BooleanRow extends React.Component {
@@ -11,7 +12,9 @@ class BooleanRow extends React.Component {
           <Link to={"/boolean/" + this.props.boolean.id}>{this.props.children}</Link>
         </Col>
         <Col lg={4}>
-          <Button bsStyle="success" disabled={!this.props.boolean.canFight}>Fight</Button>
+          <LinkContainer to={"/fight/" + this.props.boolean.id} disabled={!this.props.boolean.canFight}>
+            <Button bsStyle="success">Fight</Button>
+          </LinkContainer>
         </Col>
       </Row>
     );
