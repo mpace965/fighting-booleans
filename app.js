@@ -8,6 +8,8 @@
 // for more info, see: http://expressjs.com
 var express = require('express');
 
+var path = require('path');
+
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
@@ -20,6 +22,11 @@ app.use(express.static(__dirname + '/public'));
 
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
+
+// handle every other route with index.html
+app.get('*', function (request, response){
+  response.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+})
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, '0.0.0.0', function() {
