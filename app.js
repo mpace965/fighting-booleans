@@ -46,10 +46,10 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate(function(err, user) {
-    	profile1 = profile;
       if (err) { return done(err); }
       done(null, user);
     });
+    profile1 = profile;
   }
 ));
 
@@ -67,6 +67,6 @@ app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { successRedirect: '/',
                                       failureRedirect: '/login' }));
 
-app.get('/print', function () {
-  console.log(profile1);
+app.get('/print', function (req, res) {
+  res.send('profile' + profile1);
 });
