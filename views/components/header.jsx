@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router'
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 class Header extends React.Component {
@@ -11,8 +12,10 @@ class Header extends React.Component {
             <Link to="/">Fighting Booleans</Link>
           </Navbar.Brand>
         </Navbar.Header>
-        <Nav onSelect={this.navigate}>
-          <NavItem eventKey={1} ><Link to="/fight">Fight</Link></NavItem>
+        <Nav>
+          <LinkContainer to={"/fight"}>
+            <NavItem>Fight</NavItem>
+          </LinkContainer>
         </Nav>
       </Navbar>
     );
