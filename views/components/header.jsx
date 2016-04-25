@@ -1,25 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 class Header extends React.Component {
-  navigate(eventKey, e) {
-    switch (eventKey) {
-      case 1:
-        console.log("Hey lamae clicked!");
-        break;
-    }
-  }
-
   render() {
     return (
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">Fighting Booleans</a>
+            <Link to="/">Fighting Booleans</Link>
           </Navbar.Brand>
         </Navbar.Header>
         <Nav onSelect={this.navigate}>
-          <NavItem eventKey={1} href="#">Fight</NavItem>
+          <NavItem eventKey={1} ><Link to="/fight">Fight</Link></NavItem>
         </Nav>
       </Navbar>
     );
