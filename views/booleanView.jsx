@@ -22,8 +22,8 @@ class NotFound extends React.Component {
 class StatRow extends React.Component {
   render() {
     return (
-      <Row className="statRowItem">
-        <Col className="vcenter" lg={8}>
+      <Row className="rowItem">
+        <Col lg={8}>
           <p>Is {this.props.stat.has ? "" : "not"} {this.props.stat.name}</p>
         </Col>
         <Col lg={4}>
@@ -49,19 +49,19 @@ class BooleanView extends React.Component {
 
   getInfoFromServer() {
     $.ajax({
-        url: '/api/booleans/' + this.props.params.id,
+        url: '/api/boolean/' + this.props.params.id,
         dataType: 'json',
         cache: false,
         success: function(data) {
-          this.setState({name: data.name, streaks: data.streaks, stats: data.stats});
+          this.setState({name: data.name, streaks: data.streaks, stats: data.stats, alive: data.alive});
         }.bind(this),
         error: function(xhr, status, err) {
           this.setState({name: "Matt",
             streaks: {wins: 2, losses: 1, streak: 1},
             stats: [{name: "strong", has: false}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true})
+            alive: true});
           // this.setState({error: true});
-          // console.error('/api/booleans', status, err.toString());
+          // console.error('/api/boolean/' + this.props.params.id, status, err.toString());
         }.bind(this)
     });
   }
