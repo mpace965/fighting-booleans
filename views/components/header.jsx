@@ -13,7 +13,7 @@ class Header extends React.Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
-          <LinkContainer to={"/fight"}>
+          <LinkContainer to={"/booleans"}>
             <NavItem>Fight</NavItem>
           </LinkContainer>
         </Nav>
