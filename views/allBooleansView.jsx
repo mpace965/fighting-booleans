@@ -1,13 +1,14 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Row, Button, PageHeader } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 class BooleanRow extends React.Component {
   render() {
     return (
       <Row className="rowItem">
         <Col lg={8}>
-          <p>{this.props.children}</p>
+          <Link to={"/boolean/" + this.props.boolean.id}>{this.props.children}</Link>
         </Col>
         <Col lg={4}>
           <Button bsStyle="success" disabled={!this.props.boolean.canFight}>Fight</Button>
