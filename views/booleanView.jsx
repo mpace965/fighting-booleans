@@ -38,7 +38,7 @@ class StatRow extends React.Component {
         url: '/api/boolean/' + this.props.id + '/buyStat',
         dataType: 'json',
         cache: false,
-        data: {stat: this.props.stat.name},
+        data: {userId: 0, stat: this.props.stat.name},
         success: function(data) {
           if (data.bought) {
             this.setState({has: true});
@@ -93,6 +93,7 @@ class BooleanView extends React.Component {
         url: '/api/boolean/' + this.props.params.id,
         dataType: 'json',
         cache: false,
+        data: {userId: 0},
         success: function(data) {
           this.setState({name: data.name, streaks: data.streaks, stats: data.stats, alive: data.alive});
         }.bind(this),
