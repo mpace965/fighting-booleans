@@ -8,6 +8,7 @@
   "dependencies": {
     "cfenv": "1.0.x",
     "express": "4.13.x",
+    "mongodb": "^2.1.16",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0"
   },

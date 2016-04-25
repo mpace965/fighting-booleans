@@ -18,6 +18,10 @@ var passport = require('passport');
 // facebook strategy for passport
 var FacebookStrategy = require('passport-facebook').Strategy;
 
+// mongodb client
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+
 // create a new express server
 var app = express();
 
@@ -32,6 +36,14 @@ app.listen(appEnv.port, '0.0.0.0', function() {
 
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
+});
+
+// mongodb connection
+var url = 'mongodb://1f71ac31-c4f7-495a-be66-54a2b8759702:0ca3ef65-12c9-4855-998d-5470fdc00cea@192.155.243.23:10120/db';
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to mongodb server");
+  db.close();
 });
 
 var FACEBOOK_APP_ID = 265118990493490;
