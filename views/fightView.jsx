@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Row, Button, DropdownButton, MenuItem, PageHeader } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class FightView extends React.Component {
   constructor(props) {
@@ -73,8 +74,13 @@ class FightView extends React.Component {
   }
 
   render() {
+    var opponentId = this.props.params.opponentId;
     var myBooleansList = this.state.myBooleans.map(function(boolean) {
-      return <MenuItem key={boolean.id}>{boolean.name}</MenuItem>;
+      return (
+        <LinkContainer key={boolean.id} to={"/fight-result/" + opponentId + "/" + boolean.id}>
+          <MenuItem>{boolean.name}</MenuItem>
+        </LinkContainer>
+      );
     });
 
     return (
