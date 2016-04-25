@@ -68,5 +68,6 @@ app.get('/auth/facebook/callback',
                                       failureRedirect: '/login' }));
 
 app.get('/print', function (req, res) {
-  res.send('profile' + profile1);
+  console.log('test');
+  console.log('profile1');
 });
