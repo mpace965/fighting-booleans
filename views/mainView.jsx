@@ -2,17 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
-import LoginView from './loginView';
-import FightView from './fightView';
 import Header from './components/header';
+import LoginView from './loginView';
+import AllBooleansView from './allBooleansView';
+import BooleanView from './booleanView';
 
 class Wrapper extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-
     return (
       <div>
         <Header />
@@ -26,7 +22,8 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={Wrapper}>
       <IndexRoute component={LoginView} />
-      <Router path="fight" component={FightView} />
+      <Route path="booleans" component={AllBooleansView} />
+      <Route path="boolean/:id" component={BooleanView} />
     </Route>
   </Router>
 ), document.getElementById('wrapper'));
