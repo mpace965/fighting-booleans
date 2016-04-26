@@ -24,7 +24,7 @@ export function getBoolean(id, callback) {
     stats: [{name: "strong", has: false}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
     alive: true};
 
-  get('/api/booleans/' + id, callback, bool);
+  get('/api/boolean/' + id, callback, bool);
 }
 
 export function getMyBooleans(callback) {

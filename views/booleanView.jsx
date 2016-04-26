@@ -36,7 +36,7 @@ class StatRow extends React.Component {
 
   buyStatFromServer() {
     $.ajax({
-        url: '/api/booleans/buystat/' + this.props.id + '/' + this.props.stat.name,
+        url: '/api/boolean/buystat/' + this.props.id + '/' + this.props.stat.name,
         dataType: 'json',
         cache: false,
         success: function(data) {
