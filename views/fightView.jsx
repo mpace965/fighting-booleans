@@ -29,7 +29,7 @@ class FightView extends React.Component {
     var opponentId = this.props.params.opponentId;
     var myBooleansList = this.state.myBooleans.map(function(boolean) {
       return (
-        <LinkContainer key={boolean.id} to={"/fight-result/" + opponentId + "/" + boolean.id}>
+        <LinkContainer key={boolean._id} to={"/fight-result/" + opponentId + "/" + boolean._id}>
           <MenuItem>{boolean.name}</MenuItem>
         </LinkContainer>
       );
