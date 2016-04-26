@@ -34,7 +34,8 @@ module.exports = function(app, passport) {
     app.get('/api/booleans', function(req, res) {
       Fboolean.getAllBooleans(function (err, results) {
         if (err) return console.error(err);
-        res.json(results);
+        var arr = populateOwnerArr(results, req.user.id);
+        res.json(arr);
       });
     });
 
@@ -42,7 +43,8 @@ module.exports = function(app, passport) {
     app.get('/api/booleans/mine', function(req, res) {
       Fboolean.getBooleansByUserID(req.user.id, function (err, results) {
         if (err) return console.error(err);
-        res.json(results);
+        var arr = populateOwnerArr(results, req.user.id);
+        res.json(arr);
       });
     });
 
@@ -50,7 +52,8 @@ module.exports = function(app, passport) {
     app.get('/api/boolean/:id', function(req, res) {
       Fboolean.getBoolean(req.params.id, function (err, results) {
         if (err) return console.error(err);
-        res.json(results);
+        var obj = populateOwnerObj(results, req.user.id);
+        res.json(obj);
       });
     });
 
@@ -67,7 +70,8 @@ module.exports = function(app, passport) {
       // console.log("user : " + req.user);
       Fboolean.addBoolean(req.user.id, req.params.name, function (err, results) {
         if (err) return console.error(err);
-        res.json(results);
+        var obj = populateOwnerObj(results, req.user.id);
+        res.json(obj);
       });
     });
 
@@ -88,4 +92,18 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function populateOwnerArr(results, userID) {
+  return results.map(function(tempObj) {
+    var obj = tempObj.toObject();
+    obj.ownedBy = (obj.ownerID == userID);
+    return obj;
+  });
+}
+
+function populateOwnerObj(results, userID) {
+  var obj = tempObj.toObject();
+  obj.ownedBy = (obj.ownerID == userID);
+  return obj;
 }
