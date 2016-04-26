@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router'
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
-import getAuth from './auth';
+var getAuth = require('./auth').getAuth;
 
 class Header extends React.Component {
   constructor(props) {

@@ -1,12 +1,11 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Button, Alert, PageHeader } from 'react-bootstrap';
-import getAuth from './components/auth';
+var getAuth = require('./components/auth').getAuth;
 
 class ManageView extends React.Component {
   constructor(props) {
     super(props);
-    // this.getBooleansFromServer = this.getBooleansFromServer.bind(this);
 
     this.state = {
       auth: false,
@@ -18,7 +17,7 @@ class ManageView extends React.Component {
     getAuth((authenticated) => this.setState({auth: authenticated, apiWaiting: false}));
 
     if (this.state.auth) {
-      
+
     }
   }
 
