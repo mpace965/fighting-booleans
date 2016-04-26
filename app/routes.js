@@ -15,7 +15,7 @@ module.exports = function(app, passport) {
     });
 
     // route for facebook logout
-    app.get('/logout', function(req, res) {
+    app.get('/logout', isLoggedIn, function(req, res) {
         req.logout();
         res.redirect('/');
     });
@@ -31,7 +31,7 @@ module.exports = function(app, passport) {
         }));
 
     // get all booleans
-    app.get('/api/booleans', function(req, res) {
+    app.get('/api/booleans', isLoggedIn, function(req, res) {
       Fboolean.getAllBooleans(function (err, results) {
         if (err) return console.error(err);
         if (req.user) {
@@ -45,7 +45,7 @@ module.exports = function(app, passport) {
     });
 
     // get all booleans
-    app.get('/api/booleans/mine', function(req, res) {
+    app.get('/api/booleans/mine', isLoggedIn, function(req, res) {
       Fboolean.getBooleansByUserID(req.user.id, function (err, results) {
         if (err) return console.error(err);
         var arr = populateOwnerArr(results, req.user.id);
@@ -54,7 +54,7 @@ module.exports = function(app, passport) {
     });
 
     // get boolean by id
-    app.get('/api/boolean/:id', function(req, res) {
+    app.get('/api/boolean/:id', isLoggedIn, function(req, res) {
       Fboolean.getBoolean(req.params.id, function (err, results) {
         if (err) return console.error(err);
         var obj = populateOwnerObj(results, req.user.id);
@@ -63,7 +63,7 @@ module.exports = function(app, passport) {
     });
 
     // get boolean by id
-    app.get('/api/boolean/delete/:id', function(req, res) {
+    app.get('/api/boolean/delete/:id', isLoggedIn, function(req, res) {
       Fboolean.deleteBoolean(req.params.id, function (err, results) {
         if (err) return console.error(err);
         res.json(results);
@@ -71,7 +71,7 @@ module.exports = function(app, passport) {
     });
 
     // buy
-    app.get('/api/boolean/buystat/:id/:stat', function(req, res) {
+    app.get('/api/boolean/buystat/:id/:stat', isLoggedIn, function(req, res) {
       Fboolean.setBooleanStat(req.params.id, req.params.stat, function (err, results) {
         if (err) return console.error(err);
         res.json(results);
@@ -79,7 +79,7 @@ module.exports = function(app, passport) {
     });
 
     // create new
-    app.get('/api/createBoolean/:name', function(req, res) {
+    app.get('/api/createBoolean/:name', isLoggedIn, function(req, res) {
       // console.log("user : " + req.user);
       Fboolean.addBoolean(req.user.id, req.params.name, function (err, results) {
         if (err) return console.error(err);
@@ -89,14 +89,14 @@ module.exports = function(app, passport) {
     });
 
     // fightingbools
-    app.get('/api/fight-result/:id2/:id1', function(req, res) {
+    app.get('/api/fight-result/:id2/:id1', isLoggedIn, function(req, res) {
       Fboolean.getFight(req.params.id1, req.params.id2, function(win) {
         res.json({ won : win });
       });
     });
 
     // kill boolean
-    app.get('/api/boolean/kill/:id', function(req, res) {
+    app.get('/api/boolean/kill/:id', isLoggedIn, function(req, res) {
       Fboolean.setBooleanDeath(req.params.id, function(err, results) {
         if (err) console.error(err);
         res.json(results);
