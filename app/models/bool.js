@@ -151,7 +151,7 @@ booleanLoss = function (booleanID) {
     
     Fboolean.findById(booleanID, function (err, results) {
       if (err) return console.error(err);
-      if (result.streaks.losses >= 10) {
+      if (results.streaks.losses >= 10) {
         Fboolean.update(
           { '_id' : booleanID},
           { 'alive' : false },
