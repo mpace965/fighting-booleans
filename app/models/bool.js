@@ -55,6 +55,17 @@ module.exports.getBoolean = function(id, callback) {
 // get fight results
 module.exports.getFight = function(id1, id2, callback) {
   var win = Math.random() < 0.5;
+  var call = "http://gateway-a.watsonplatform.net/calls/text/TextGetEmotion?apikey=411671034f8b539058d0c8494f1c6d30543754d4&outputMode=json&text=";
+  var text = "";
+  Fboolean.findById(id1, function(err, results) {
+    if (err) concole.error(err);
+    results.stats.forEach(function(obj) {
+      text += "is " + (obj.has ? "" : "not ") + obj.name + ", ";
+      console.log("text 1 : " + text);
+    });
+  });
+  console.log("text : " + text);
+
   if (win) {
     booleanWin(id1);
     booleanLoss(id2);
@@ -96,6 +107,16 @@ module.exports.setBooleanStat = function(id, stat, callback) {
   );
 };
 
+// boolean death by id
+module.exports.setBooleanDeath = function (booleanID, callback) {
+  Fboolean.update(
+    { '_id' : booleanID},
+    { 'alive' : false},
+    { 'new' : true },
+    callback
+  );
+};
+
 // increment boolean win by id
 booleanWin = function (booleanID) {
   Fboolean.update(
@@ -116,19 +137,6 @@ booleanLoss = function (booleanID) {
     { 'new' : true },
     function (err, results) {
       if (err) return console.error(err);
-    }
-  );
-};
-
-// boolean death by id
-exports.booleanDeath = function (booleanID) {
-  console.log('booleanDeath');
-  Fboolean.findOneAndUpdate(
-    { '_id' : booleanID},
-    { 'alive' : false},
-    { 'new' : true },
-    function (err, results) {
-      console.log('booleanDeath results = ' + results);
     }
   );
 };

@@ -34,8 +34,13 @@ module.exports = function(app, passport) {
     app.get('/api/booleans', function(req, res) {
       Fboolean.getAllBooleans(function (err, results) {
         if (err) return console.error(err);
-        var arr = populateOwnerArr(results, req.user.id);
-        res.json(arr);
+        if (req.user) {
+          var arr = populateOwnerArr(results, req.user.id);
+          res.json(arr);
+        }
+        else {
+          res.json(results);
+        }
       });
     });
 
@@ -79,6 +84,14 @@ module.exports = function(app, passport) {
     app.get('/api/fight-result/:id2/:id1', function(req, res) {
       Fboolean.getFight(req.params.id1, req.params.id2, function(win) {
         res.json({ won : win });
+      });
+    });
+
+    // kill boolean
+    app.get('/api/boolean/kill/:id', function(req, res) {
+      Fboolean.setBooleanDeath(req.params.id, function(err, results) {
+        if (err) console.error(err);
+        res.json(results);
       });
     });
 };
