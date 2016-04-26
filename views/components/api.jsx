@@ -30,8 +30,6 @@ export function getFightResult(id1, id2, callback) {
   get('/api/fight-result/' + id1 + '/' + id2, callback);
 }
 
-export function createBoolean(name) {
-  $.ajax({
-      url: '/api/createBoolean/' + name
-  });
+export function createBoolean(name, callback) {
+  get('/api/createBoolean/' + name, callback);
 }

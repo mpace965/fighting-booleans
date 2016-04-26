@@ -31,8 +31,7 @@ class ManageView extends React.Component {
   }
 
   submit() {
-    createBoolean(this.state.createName);
-    getMyBooleans((bools) => this.setState({myBooleans: bools}));
+    createBoolean(this.state.createName, () => getMyBooleans((bools) => this.setState({myBooleans: bools})));
     this.setState({createName: "", showModal: false});
   }
 
