@@ -8,12 +8,12 @@ module.exports = function(app, passport) {
     app.get('/getUserID', isLoggedIn, function (req, res) {
         res.send(req.user.id);
     });
-    
+
     // check if user is authenticated
     app.get('/auth/isAuthenticated', function (req, res) {
         res.json({ auth: req.isAuthenticated() });
     });
-    
+
     // route for facebook logout
     app.get('/logout', function(req, res) {
         req.logout();
@@ -38,8 +38,16 @@ module.exports = function(app, passport) {
       });
     });
 
+    // get all booleans
+    app.get('/api/booleans/mine', function(req, res) {
+      Fboolean.getBooleansByUserID(req.user.id, function (err, results) {
+        if (err) return console.error(err);
+        res.json(results);
+      });
+    });
+
     // get boolean by id
-    app.get('/api/booleans/:id', function(req, res) {
+    app.get('/api/boolean/:id', function(req, res) {
       Fboolean.getBoolean(req.params.id, function (err, results) {
         if (err) return console.error(err);
         res.json(results);
@@ -47,7 +55,7 @@ module.exports = function(app, passport) {
     });
 
     // buy
-    app.get('/api/booleans/buystat/:id/:stat', function(req, res) {
+    app.get('/api/boolean/buystat/:id/:stat', function(req, res) {
       Fboolean.setBooleanStat(req.params.id, req.params.stat, function (err, results) {
         if (err) return console.error(err);
         res.json(results);
@@ -57,7 +65,7 @@ module.exports = function(app, passport) {
     // create new
     app.get('/api/createBoolean/:name', function(req, res) {
       // console.log("user : " + req.user);
-      Fboolean.addBoolean(req.user, req.params.name, function (err, results) {
+      Fboolean.addBoolean(req.user.id, req.params.name, function (err, results) {
         if (err) return console.error(err);
         res.json(results);
       });
