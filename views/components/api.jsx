@@ -33,3 +33,11 @@ export function getFightResult(id1, id2, callback) {
 export function createBoolean(name, callback) {
   get('/api/createBoolean/' + name, callback);
 }
+
+export function deleteBoolean(id, callback) {
+  get('/api/boolean/delete/' + id, callback);
+}
+
+export function killBoolean(id, callback) {
+  get('/api/boolean/kill/' + id, callback);
+}

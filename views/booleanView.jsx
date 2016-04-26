@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import { Grid, Row, Col, PageHeader, Alert, Modal, Panel, Button } from 'react-bootstrap';
 var getBoolean = require('./components/api').getBoolean;
+var deleteBoolean = require('./components/api').deleteBoolean;
 
 class NotFound extends React.Component {
   render() {
@@ -119,7 +120,10 @@ class BooleanView extends React.Component {
       <div>
         <Grid>
           <Col>
-            <PageHeader>{this.state.boolean.name} is {this.state.boolean.alive ? "alive" : "dead"}</PageHeader>
+            <PageHeader>
+              {this.state.boolean.name} is {this.state.boolean.alive ? "alive" : "dead"}
+              <Button className="pullRight" bsStyle="danger" bsSize="large" onClick={deleteBoolean.bind(this.state.boolean._id)}>Delete</Button>
+            </PageHeader>
 
             <Row>
               <Col lg={8}>
