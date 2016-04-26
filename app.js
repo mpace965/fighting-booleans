@@ -7,7 +7,7 @@ var express = require('express');
 // create a new express server
 var app = express();
 
-var path = require('path')
+var path = require('path');
 
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
