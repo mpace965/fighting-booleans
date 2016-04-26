@@ -122,7 +122,7 @@ class BooleanView extends React.Component {
           <Col>
             <PageHeader>
               {this.state.boolean.name} is {this.state.boolean.alive ? "alive" : "dead"}
-              <Button className="pullRight" bsStyle="danger" bsSize="large" onClick={() => deleteBoolean(this.state.boolean._id)}>Delete</Button>
+              <Button className="pullRight" bsStyle="danger" bsSize="large" disabled={!this.state.boolean.ownedBy} onClick={() => deleteBoolean(this.state.boolean._id)}>Delete</Button>
             </PageHeader>
 
             <Row>
