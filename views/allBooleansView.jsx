@@ -9,10 +9,10 @@ class BooleanRow extends React.Component {
     return (
       <Row className="rowItem">
         <Col lg={8}>
-          <Link to={"/boolean/" + this.props.boolean.id}>{this.props.children}</Link>
+          <Link to={"/boolean/" + this.props.boolean._id}>{this.props.children}</Link>
         </Col>
         <Col lg={4}>
-          <LinkContainer to={"/fight/" + this.props.boolean.id} disabled={!this.props.boolean.canFight}>
+          <LinkContainer to={"/fight/" + this.props.boolean._id} disabled={!this.props.boolean.canFight}>
             <Button bsStyle="success">Fight</Button>
           </LinkContainer>
         </Col>
