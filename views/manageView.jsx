@@ -18,7 +18,7 @@ class ManageView extends React.Component {
     getAuth((authenticated) => this.setState({auth: authenticated, apiWaiting: false}));
 
     if (this.state.auth) {
-
+      
     }
   }
 

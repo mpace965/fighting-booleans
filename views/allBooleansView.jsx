@@ -1,8 +1,8 @@
 import React from 'react';
-import $ from 'jquery';
 import { Grid, Col, Row, Button, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router';
+var getAllBooleans = require('./components/api').getAllBooleans;
 
 class BooleanRow extends React.Component {
   render() {
@@ -26,34 +26,15 @@ class AllBooleansView extends React.Component {
     super(props);
 
     this.state = {
-      booleans: [],
-      error: false
+      booleans: []
     }
   }
 
-  getBooleansFromServer() {
-    $.ajax({
-        url: '/api/booleans/',
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({booleans: data.booleans});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          this.setState({booleans: [{name: "Matt", id: "2393", canFight: false}, {name: "Tom", id: "2394", canFight: true}]});
-          // this.setState({error: true});
-          // console.error('/api/booleans', status, err.toString());
-        }.bind(this)
-    });
-  }
-
   componentDidMount() {
-    this.getBooleansFromServer();
+    getAllBooleans((data) => this.setState({booleans: data}));
   }
 
   render() {
-
     var booleans = this.state.booleans.map(function(boolean) {
       return <BooleanRow key={boolean.name} boolean={boolean}>{boolean.name}</BooleanRow>;
     });

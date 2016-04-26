@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Row, Col, PageHeader, Alert, Modal, Panel, Button } from 'react-bootstrap';
+var getBoolean = require('./components/api').getBoolean;
 
 class NotFound extends React.Component {
   render() {
@@ -70,7 +71,6 @@ class StatRow extends React.Component {
 class BooleanView extends React.Component {
   constructor(props) {
     super(props);
-    this.getInfoFromServer = this.getInfoFromServer.bind(this);
     this.showModal = this.showModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 
@@ -88,28 +88,7 @@ class BooleanView extends React.Component {
   }
 
   componentDidMount() {
-    this.getInfoFromServer();
-  }
-
-  getInfoFromServer() {
-    $.ajax({
-        url: '/api/boolean/' + this.props.params.id,
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({boolean: data});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          var bool = {name: "Matt",
-            streaks: {wins: 2, losses: 1, streak: 1},
-            stats: [{name: "strong", has: false}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true};
-          this.setState({boolean: bool});
-          // this.setState({error: true});
-          // console.error('/api/boolean/' + this.props.params.id, status, err.toString());
-        }.bind(this)
-    });
+    getBoolean(this.props.params.id, (data) => this.setState({boolean: data}));
   }
 
   showModal() {

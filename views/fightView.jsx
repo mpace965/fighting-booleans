@@ -1,13 +1,12 @@
 import React from 'react';
-import $ from 'jquery';
 import { Grid, Col, Row, Button, DropdownButton, MenuItem, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+var getBoolean = require('./components/api').getBoolean;
+var getMyBooleans = require('./components/api').getMyBooleans;
 
 class FightView extends React.Component {
   constructor(props) {
     super(props);
-    this.getOpponentInfoFromServer = this.getOpponentInfoFromServer.bind(this);
-    this.getBooleansFromServer = this.getBooleansFromServer.bind(this);
 
     this.state = {
       opponent: {
@@ -22,55 +21,8 @@ class FightView extends React.Component {
   }
 
   componentDidMount() {
-    this.getOpponentInfoFromServer();
-    this.getBooleansFromServer();
-  }
-
-  getOpponentInfoFromServer() {
-    $.ajax({
-        url: '/api/boolean/' + this.props.params.opponentId,
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({opponent: data});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          this.setState({opponent: {name: "Tom",
-            id: "2393",
-            streaks: {wins: 2, losses: 1, streak: 1},
-            stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true}});
-          // this.setState({error: true});
-          // console.error('/api/boolean/' + this.props.params.opponentId, status, err.toString());
-        }.bind(this)
-    });
-  }
-
-  getBooleansFromServer() {
-    $.ajax({
-        url: '/api/booleans/mine',
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({myBooleans: data});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          this.setState({myBooleans: [{name: "Matt",
-            id: "2393",
-            streaks: {wins: 2, losses: 1, streak: 1},
-            stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true},
-            {name: "Matt2",
-              id: "2395",
-              streaks: {wins: 2, losses: 1, streak: 1},
-              stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-              alive: true}]});
-          // this.setState({error: true});
-          // console.error('/api/boolean/' + this.props.params.opponentId, status, err.toString());
-        }.bind(this)
-    });
+    getBoolean(this.props.params.opponentId, (data) => this.setState({opponent: data}));
+    getMyBooleans((data) => this.setState({myBooleans: data}));
   }
 
   render() {

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-function getAuth(callback) {
+export function getAuth(callback) {
   $.ajax({
       url: '/auth/isAuthenticated/',
       dataType: 'json',
@@ -14,5 +14,3 @@ function getAuth(callback) {
       }
   });
 }
-
-export default getAuth;

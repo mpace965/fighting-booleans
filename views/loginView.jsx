@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Button, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import getAuth from './components/auth';
+var getAuth = require('./components/auth').getAuth;
 
 class LoginView extends React.Component {
   constructor(props) {
