@@ -17,7 +17,9 @@ var cfenv = require('cfenv');
 var appEnv = cfenv.getAppEnv();
 
 var passport = require('passport');
+var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
 
 var FacebookStrategy = require('passport-facebook').Strategy;
 
@@ -27,13 +29,16 @@ require('./config/passport')(passport); // pass passport for configuration
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
+app.use(cookieParser());
+app.use(session({ secret: 'fightingbools' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 require('./app/routes.js')(app, passport);
 
 app.get('*', function (request, response){
-  response.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+  response.sendFile(path.resolve(__dirname, './public', 'index.html'))
 })
 
 // start server on the specified port and binding host
