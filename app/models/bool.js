@@ -42,6 +42,11 @@ module.exports.getAllBooleans = function(callback) {
   Fboolean.find(callback);
 };
 
+// get booleans for user id
+module.exports.getBooleansByUserID = function (userID, callback) {
+  Fboolean.find({ 'ownerID' : userID }, callback);
+};
+
 // get boolean by id
 module.exports.getBoolean = function(id, callback) {
   Fboolean.findById(id, callback);
@@ -89,18 +94,6 @@ module.exports.setBooleanStat = function(id, stat, callback) {
     { 'new' : true },
     callback
   );
-};
-
-// get booleans for user id
-exports.getBooleansByUserID = function (userID) {
-  console.log('getBooleansByUserID');
-  Fboolean.find({ 'ownerID' : userID }, function (err, results) {
-    if (err) return console.error(err);
-    console.log('getBooleansByUserID results = ');
-    results.map(function (obj) {
-      console.log(obj.name + ' : wins = ' + obj.streaks.wins + ' : alive = ' + obj.alive + ' : id = ' + obj._id);
-    });
-  });
 };
 
 // get boolean by id
