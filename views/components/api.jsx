@@ -35,7 +35,7 @@ export function createBoolean(name, callback) {
 }
 
 export function deleteBoolean(id, callback) {
-  get('/api/boolean/delete/' + id, callback);
+  get('/api/boolean/delete/' + id);
 }
 
 export function killBoolean(id, callback) {
