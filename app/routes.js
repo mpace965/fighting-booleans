@@ -10,7 +10,7 @@ module.exports = function(app, passport) {
     // check if user is authenticated
     app.get('/auth/isAuthenticated', function (req, res) {
         res.json({ auth: req.isAuthenticated() });
-    })
+    });
     
     // route for facebook logout
     app.get('/logout', function(req, res) {
