@@ -39,9 +39,6 @@ db.once('open', function() {
   console.log("Connection successful!");
 });
 
-require('./config/passport')(passport);
-require('./app/routes.js')(app, passport);
-
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
@@ -49,6 +46,7 @@ app.use(session({ secret: 'fightingbools' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+require('./config/passport')(passport);
 require('./app/routes.js')(app, passport);
 
 // handle every other route with index.html
