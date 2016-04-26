@@ -43,9 +43,11 @@ var mongoUrl = "mongodb://localhost:27017/db";
 if (process.env.VCAP_SERVICES) {
   var env = JSON.parse(process.env.VCAP_SERVICES);
   if (env['mongodb-2.4']) {
-    mongoUrl = env['mongodb-2.4'][0]['credentials'];
+    mongoUrl = env['mongodb-2.4'][0]['credentials']['url'];
   }
 }
+console.log("mongo url = " + mongoUrl);
+
 mongoose.connect(mongoUrl);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -65,7 +67,7 @@ var fbooleanSchema = mongoose.Schema({
     streak : Number
   },
   stats : [{
-    name : String
+    name : String,
     has : Boolean
   }]
 });
@@ -73,36 +75,84 @@ var fbooleanSchema = mongoose.Schema({
 // copile the model
 var Fboolean = mongoose.model('Fboolean', fbooleanSchema);
 
-// insert new Fboolean
-var bitch = new Fboolean({
-  name : 'Bitch',
-  alive : true,
-  ownerID : 'ThomasFlaanel111',
-  ownerName : 'Thomas Fanella',
-  streaks : {
-    wins : 10,
-    losses : 10,
-    streak : 5
-  },
-  stats : [{
-    name : 'competency'
-    has : false
-  }]
-});
-console.log(bitch.name);
-
-// save the boolean
-bitch.save(function (err, bitch) {
-  if (err) return console.error(err);
-})
-
-// find methods
-Fboolean.find(function (err, arr) {
-  var map = arr.map(function (obj) {
-    return obj.name;
+// create new boolean by user
+var createNewBooleanByUserID = function (userID, userName, booleanName) {
+  console.log('createNewBooleanByUserID');
+  var boolTemp = new Fboolean({
+    name : booleanName,
+    alive : true,
+    ownerID : userID,
+    ownerName : userName,
+    streaks : {
+      wins : 0,
+      losses : 0,
+      streak : 0
+    },
+    stats : []
   });
-  console.log(map);
-});
+  boolTemp.save(function (err, results) {
+    if (err) return console.error(err);
+    console.log('createNewBooleanByUserID results = ' + results._id);
+  });
+};
+
+// get booleans for user id
+var getBooleansByUserID = function (userID) {
+  console.log('getBooleansByUserID');
+  Fboolean.find({ 'ownerID' : userID }, function (err, results) {
+    if (err) return console.error(err);
+    console.log('getBooleansByUserID results = ');
+    results.map(function (obj) {
+      console.log(obj.name + ' : wins = ' + obj.streaks.wins + ' : alive = ' + obj.alive + ' : id = ' + obj._id);
+    });
+  });
+};
+
+// get boolean by id
+var getBoolean = function (booleanID) {
+  console.log('getBoolean');
+  Fboolean.findOne({ '_id' : booleanID }, function (err, results) {
+    if (err) return console.error(err);
+    console.log('getBoolean results = ' + results);
+  });
+};
+
+// increment boolean win by id
+var booleanWin = function (booleanID) {
+  console.log('booleanWin');
+  Fboolean.findOne({ '_id' : booleanID }, function (err, results) {
+    if (err) return console.error(err);
+    Fboolean.findOneAndUpdate({ '_id' : booleanID}, {
+      'streaks' : {
+        'wins' : results.streaks.wins + 1,
+        'streak' : results.streaks.streak + 1,
+        'losses' : results.streaks.losses
+      }}, function (err, newresults) {
+        console.log('booleanWin results = ' + newresults);
+      });
+  });
+};
+
+// decrement boolean win by id
+var booleanLoss = function (booleanID) {
+  console.log('booleanLoss');
+  Fboolean.findOne({ '_id' : booleanID }, function (err, results) {
+    if (err) return console.error(err);
+    Fboolean.findOneAndUpdate({ '_id' : booleanID}, {
+      'streaks' : {
+        'wins' : results.streaks.wins,
+        'streak' : 0,
+        'losses' : results.streaks.losses + 1
+      }}, function (err, newresults) {
+        console.log('booleanLoss results = ' + newresults);
+      });
+  });
+};
+
+//createNewBooleanByUserID('ThomasFlaanel111', 'Thomas Fanella', 'Bitch21010');
+//getBooleansByUserID('ThomasFlaanel111');
+booleanLoss('571ec4e11bd43fbc17a4df62');
+getBoolean('571ec4e11bd43fbc17a4df62');
 
 // end mongoose tests
 
