@@ -9,6 +9,7 @@ class ManageView extends React.Component {
 
     this.state = {
       auth: false,
+      apiWaiting: true
     }
   }
 
@@ -23,7 +24,7 @@ class ManageView extends React.Component {
         cache: false,
         data: {userId: 0},
         success: function(data) {
-          this.setState({auth: data.auth});
+          this.setState({auth: data.auth, apiWaiting: false});
         }.bind(this),
         error: function(xhr, status, err) {
           console.error('/auth/isAuthenticated', status, err.toString());
@@ -32,7 +33,7 @@ class ManageView extends React.Component {
   }
 
   render() {
-    if (!this.state.auth) {
+    if (!this.state.auth && !this.state.apiWaiting) {
       return (
         <Grid>
           <Col>

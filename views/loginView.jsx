@@ -10,6 +10,7 @@ class LoginView extends React.Component {
 
     this.state = {
       auth: false,
+      apiWaiting: true
     }
   }
 
@@ -24,7 +25,7 @@ class LoginView extends React.Component {
         cache: false,
         data: {userId: 0},
         success: function(data) {
-          this.setState({auth: data.auth});
+          this.setState({auth: data.auth, apiWaiting: false});
         }.bind(this),
         error: function(xhr, status, err) {
           console.error('/auth/isAuthenticated', status, err.toString());
@@ -35,14 +36,14 @@ class LoginView extends React.Component {
   render() {
     var signIn;
 
-    if (!this.state.auth) {
+    if (!this.state.apiWaiting && !this.state.auth) {
       signIn = (
         <div>
           <p>Please sign in with Facebook to start fighting your Booleans.</p>
-          <Button href="/auth/facebook" bsStyle="primary">Sign in</Button>
+          <Button href="/auth/facebook" bsStyle="primary">Sign in with Facebook</Button>
         </div>
       );
-    } else {
+    } else if (!this.state.apiWaiting && this.state.auth) {
       signIn = (
         <p>Thank you for signing in. Click "Manage" to get started.</p>
       );
