@@ -17,15 +17,34 @@ var cfenv = require('cfenv');
 var appEnv = cfenv.getAppEnv();
 
 var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 
-var FacebookStrategy = require('passport-facebook').Strategy;
+// booleans require
+var booleans = require('./config/booleans.js');
 
-mongoose.connect('mongodb://localhost/users');
+//mongoose.connect('mongodb://localhost/users');
+// mongodb connection
+var mongoUrl = "mongodb://localhost:27017/db";
+if (process.env.VCAP_SERVICES) {
+  var env = JSON.parse(process.env.VCAP_SERVICES);
+  if (env['mongodb-2.4']) {
+    mongoUrl = env['mongodb-2.4'][0]['credentials']['url'];
+  }
+}
+console.log("mongo url = " + mongoUrl);
 
-require('./config/passport')(passport); // pass passport for configuration
+mongoose.connect(mongoUrl);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', function() {
+  console.log("Connection successful!");
+});
+
+require('./config/passport')(passport);
+require('./app/routes.js')(app, passport);
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
@@ -33,9 +52,6 @@ app.use(cookieParser());
 app.use(session({ secret: 'fightingbools' }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-require('./app/routes.js')(app, passport);
 
 app.get('*', function (request, response){
   response.sendFile(path.resolve(__dirname, './public', 'index.html'))
