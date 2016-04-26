@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js & NODE_ENV=production webpack --config prod.config.js",
+    "start": "node app.js && NODE_ENV=production webpack --config prod.config.js",
     "start-dev": "node app.js",
     "build": "webpack --watch --progress"
   },
