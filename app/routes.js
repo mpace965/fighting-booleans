@@ -100,11 +100,7 @@ module.exports = function(app, passport) {
     // fightingbools
     app.get('/api/fight-result/:id2/:id1', isLoggedIn, function(req, res) {
       Fboolean.getFight(req.params.id1, req.params.id2, function(win) {
-        console.log(win);
-        if (win === 'error')
-          res.redirect('/booleans');
-        else
-          res.json({ won : win });
+        res.json({ won : win });
       });
     });
 

@@ -71,24 +71,6 @@ module.exports.getFight = function(id1, id2, callback) {
   //   console.log("json 1 " + json1);
   // });
 
-  Fboolean.findById(id1, function (err, results) {
-      if (err) return console.error(err);
-      if (!results.alive) {
-        console.log('id1 is dead')
-        callback('error');
-        return;
-      }
-  });
-    
-  Fboolean.findById(id2, function (err, results) {
-      if (err) return console.error(err);
-      if (!results.alive) {
-        console.log('id2 is dead')
-        callback('error');
-        return;
-      }
-  });
-
   if (win) {
     booleanWin(id1);
     booleanLoss(id2);
@@ -169,7 +151,7 @@ booleanLoss = function (booleanID) {
     
     Fboolean.findById(booleanID, function (err, results) {
       if (err) return console.error(err);
-      if (results.streaks.losses >= 10) {
+      if (result.streaks.losses >= 10) {
         Fboolean.update(
           { '_id' : booleanID},
           { 'alive' : false },
