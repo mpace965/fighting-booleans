@@ -3,9 +3,12 @@
 module.exports = function(app, passport) {
 
     app.get('/getUserID', isLoggedIn, function (req, res) {
-        console.log('The user is as follows');
-        console.log(req.user);
+        res.send(req.user.id);
     });
+    
+    app.get('/auth/isAuthenticated', function (req, res) {
+        res.json({ auth: req.isAuthenticated() });
+    })
 
     // =====================================
     // FACEBOOK ROUTES =====================
