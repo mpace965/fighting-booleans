@@ -96,15 +96,6 @@ module.exports.setBooleanStat = function(id, stat, callback) {
   );
 };
 
-// get boolean by id
-exports.getBoolean = function (booleanID) {
-  console.log('getBoolean');
-  Fboolean.findOne({ '_id' : booleanID }, function (err, results) {
-    if (err) return console.error(err);
-    console.log('getBoolean results = ' + results);
-  });
-};
-
 // increment boolean win by id
 booleanWin = function (booleanID) {
   Fboolean.update(
@@ -140,11 +131,4 @@ exports.booleanDeath = function (booleanID) {
       console.log('booleanDeath results = ' + results);
     }
   );
-};
-
-// fighting two booleans returns true if id1 wins
-exports.fight = function (id1, id2) {
-  console.log('fight');
-
-  console.log('fight results = ' + win);
 };
