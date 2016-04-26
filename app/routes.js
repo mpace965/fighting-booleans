@@ -4,14 +4,22 @@ var Fboolean = require('./models/bool.js');
 
 module.exports = function(app, passport) {
 
+    // gets the user id
     app.get('/getUserID', isLoggedIn, function (req, res) {
-        console.log('The user is as follows');
-        console.log(req.user);
+        res.send(req.user.id);
+    });
+    
+    // check if user is authenticated
+    app.get('/auth/isAuthenticated', function (req, res) {
+        res.json({ auth: req.isAuthenticated() });
+    });
+    
+    // route for facebook logout
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
     });
 
-    // =====================================
-    // FACEBOOK ROUTES =====================
-    // =====================================
     // route for facebook authentication and login
     app.get('/auth/facebook', passport.authenticate('facebook'));
 
