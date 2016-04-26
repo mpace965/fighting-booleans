@@ -102,8 +102,9 @@ module.exports = function(app, passport) {
       Fboolean.getFight(req.params.id1, req.params.id2, function(win) {
         console.log(win);
         if (win === 'error')
-          res.json({ won : 'error'});
-        res.json({ won : win });
+          res.json({ won : 'error' });
+        else
+          res.json({ won : win });
       });
     });
 
