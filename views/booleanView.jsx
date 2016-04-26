@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Row, Col, PageHeader, Alert, Modal, Panel, Button } from 'react-bootstrap';
+import { browserHistory } from 'react-router';
 var getBoolean = require('./components/api').getBoolean;
 var deleteBoolean = require('./components/api').deleteBoolean;
 
@@ -122,7 +123,7 @@ class BooleanView extends React.Component {
           <Col>
             <PageHeader>
               {this.state.boolean.name} is {this.state.boolean.alive ? "alive" : "dead"}
-              <Button className="pullRight" bsStyle="danger" bsSize="large" disabled={!this.state.boolean.ownedBy} onClick={() => deleteBoolean(this.state.boolean._id)}>Delete</Button>
+              <Button className="pullRight" bsStyle="danger" bsSize="large" disabled={!this.state.boolean.ownedBy} onClick={() => deleteBoolean(this.state.boolean._id, () => browserHistory.push('/manage');)}>Delete</Button>
             </PageHeader>
 
             <Row>

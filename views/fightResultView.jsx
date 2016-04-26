@@ -29,7 +29,7 @@ class FightResultView extends React.Component {
     var resultMessage;
 
     if (this.state.won == 'error') {
-      browserHistory.push('/');
+      browserHistory.push('/booleans');
     }
 
     if (this.state.won) {
