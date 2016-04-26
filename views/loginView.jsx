@@ -2,11 +2,11 @@ import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Button, PageHeader } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import getAuth from './components/auth';
 
 class LoginView extends React.Component {
   constructor(props) {
     super(props);
-    this.getAuthenticatedFromServer = this.getAuthenticatedFromServer.bind(this);
 
     this.state = {
       auth: false,
@@ -15,22 +15,7 @@ class LoginView extends React.Component {
   }
 
   componentDidMount() {
-    this.getAuthenticatedFromServer();
-  }
-
-  getAuthenticatedFromServer() {
-    $.ajax({
-        url: '/auth/isAuthenticated/',
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({auth: data.auth, apiWaiting: false});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error('/auth/isAuthenticated', status, err.toString());
-        }.bind(this)
-    });
+    getAuth((authenticated) => this.setState({auth: authenticated, apiWaiting: false}));
   }
 
   render() {

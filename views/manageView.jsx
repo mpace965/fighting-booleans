@@ -1,11 +1,12 @@
 import React from 'react';
 import $ from 'jquery';
 import { Grid, Col, Button, Alert, PageHeader } from 'react-bootstrap';
+import getAuth from './components/auth';
 
 class ManageView extends React.Component {
   constructor(props) {
     super(props);
-    this.getAuthenticatedFromServer = this.getAuthenticatedFromServer.bind(this);
+    // this.getBooleansFromServer = this.getBooleansFromServer.bind(this);
 
     this.state = {
       auth: false,
@@ -14,22 +15,11 @@ class ManageView extends React.Component {
   }
 
   componentDidMount() {
-    this.getAuthenticatedFromServer();
-  }
+    getAuth((authenticated) => this.setState({auth: authenticated, apiWaiting: false}));
 
-  getAuthenticatedFromServer() {
-    $.ajax({
-        url: '/auth/isAuthenticated/',
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({auth: data.auth, apiWaiting: false});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error('/auth/isAuthenticated', status, err.toString());
-        }.bind(this)
-    });
+    if (this.state.auth) {
+
+    }
   }
 
   render() {
