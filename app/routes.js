@@ -103,7 +103,7 @@ function populateOwnerArr(results, userID) {
 }
 
 function populateOwnerObj(results, userID) {
-  var obj = tempObj.toObject();
+  var obj = results.toObject();
   obj.ownedBy = (obj.ownerID == userID);
   return obj;
 }

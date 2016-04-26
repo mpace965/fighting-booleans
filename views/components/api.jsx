@@ -15,31 +15,19 @@ function get(url, callback) {
 }
 
 export function getAllBooleans(callback) {
-  get('/api/booleans', callback, [{name: "Matt", id: "2393", canFight: false}, {name: "Tom", id: "2394", canFight: true}]);
+  get('/api/booleans', callback);
 }
 
 export function getBoolean(id, callback) {
-  var bool = {name: "Matt",
-    streaks: {wins: 2, losses: 1, streak: 1},
-    stats: [{name: "strong", has: false}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-    alive: true};
-
-  get('/api/boolean/' + id, callback, bool);
+  get('/api/boolean/' + id, callback);
 }
 
 export function getMyBooleans(callback) {
-  var dummy = [{name: "Matt",
-    id: "2393",
-    streaks: {wins: 2, losses: 1, streak: 1},
-    stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-    alive: true},
-    {name: "Matt2",
-      id: "2395",
-      streaks: {wins: 2, losses: 1, streak: 1},
-      stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-      alive: true}];
+  get('/api/booleans/mine', callback);
+}
 
-  get('/api/booleans/mine', callback, dummy);
+export function getFightResult(id1, id2, callback) {
+  get('/api/fight-result/' + id1 + '/' + id2, callback);
 }
 
 export function createBoolean(name) {

@@ -61,7 +61,7 @@ class StatRow extends React.Component {
           <p>Is {this.state.has ? "" : "not"} {this.props.stat.name}</p>
         </Col>
         <Col lg={4}>
-          <Button bsStyle="success" disabled={this.state.has || !this.props.alive} onClick={this.buyStatFromServer}>Buy</Button>
+          <Button bsStyle="success" disabled={this.state.has || !this.props.alive || !this.props.ownedBy} onClick={this.buyStatFromServer}>Buy</Button>
         </Col>
       </Row>
     );
@@ -111,6 +111,7 @@ class BooleanView extends React.Component {
         stat={stat}
         alive={context.state.boolean.alive}
         id={context.props.params.id}
+        ownedBy={context.state.boolean.ownedBy}
         showModal={context.showModal} />;
     });
 

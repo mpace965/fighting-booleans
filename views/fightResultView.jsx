@@ -1,69 +1,34 @@
 import React from 'react';
-import $ from 'jquery';
 import { Grid, Col, Row, PageHeader } from 'react-bootstrap';
+var getFightResult = require('./components/api').getFightResult;
+var getBoolean = require('./components/api').getBoolean;
 
 class FightResultView extends React.Component {
   constructor(props) {
     super(props);
-    this.getResultFromServer = this.getResultFromServer.bind(this);
 
     this.state = {
       opponent: {
-        name: "",
-        id: "",
-        alive: true,
-        streaks: {},
-        stats: []
+        name: ""
       },
       boolean: {
-        name: "",
-        id: "",
-        alive: true,
-        streaks: {},
-        stats: []
+        name: ""
       },
       won: false
     };
   }
 
   componentDidMount() {
-    this.getResultFromServer();
-  }
-
-  getResultFromServer() {
-    $.ajax({
-        url: '/api/fight-result/' + this.props.params.opponentId + '/' + this.props.params.yourId,
-        dataType: 'json',
-        cache: false,
-        data: {userId: 0},
-        success: function(data) {
-          this.setState({opponent: data.opponent});
-          this.setState({boolean: data.boolean});
-          this.setState({result: data.result});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          this.setState({opponent: {name: "Tom",
-            id: "2393",
-            streaks: {wins: 2, losses: 1, streak: 1},
-            stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true}});
-          this.setState({boolean: {name: "Matt",
-            id: "2393",
-            streaks: {wins: 2, losses: 1, streak: 1},
-            stats: [{name: "strong", has: true}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
-            alive: true}});
-          this.setState({result: true});
-          // this.setState({error: true});
-          // console.error('/api/boolean/' + this.props.params.opponentId, status, err.toString());
-        }.bind(this)
-    });
+    getFightResult(this.props.params.opponentId, this.props.params.yourId, (data) => this.setState({won: data.won}));
+    getBoolean(this.props.params.opponentId, (data) => this.setState({opponent: data}));
+    getBoolean(this.props.params.yourId, (data) => this.setState({boolean: data}));
   }
 
   render() {
     var resultMessage;
 
-    if (this.state.result) {
-      resultMessage = <p>You won! One tautology has been added to your account.</p>;
+    if (this.state.won) {
+      resultMessage = <p>You won!</p>;
     } else {
       resultMessage = <p>You lost.</p>;
     }
