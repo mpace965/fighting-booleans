@@ -75,6 +75,7 @@ module.exports.getFight = function(id1, id2, callback) {
       if (err) return console.error(err);
       if (!results.alive) {
         callback('error');
+        return;
       }
   });
     
@@ -82,6 +83,7 @@ module.exports.getFight = function(id1, id2, callback) {
       if (err) return console.error(err);
       if (!results.alive) {
         callback('error');
+        return;
       }
   });
 
