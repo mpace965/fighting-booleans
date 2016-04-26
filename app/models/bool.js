@@ -73,14 +73,14 @@ module.exports.getFight = function(id1, id2, callback) {
 
   Fboolean.findById(id1, function (err, results) {
       if (err) return console.error(err);
-      if (!result.alive) {
+      if (!results.alive) {
         callback('error');
       }
   });
     
   Fboolean.findById(id2, function (err, results) {
       if (err) return console.error(err);
-      if (!result.alive) {
+      if (!results.alive) {
         callback('error');
       }
   });
