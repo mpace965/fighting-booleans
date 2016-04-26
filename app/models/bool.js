@@ -74,6 +74,7 @@ module.exports.getFight = function(id1, id2, callback) {
   Fboolean.findById(id1, function (err, results) {
       if (err) return console.error(err);
       if (!results.alive) {
+        console.log('id1 is dead')
         callback('error');
         return;
       }
@@ -82,6 +83,7 @@ module.exports.getFight = function(id1, id2, callback) {
   Fboolean.findById(id2, function (err, results) {
       if (err) return console.error(err);
       if (!results.alive) {
+        console.log('id2 is dead')
         callback('error');
         return;
       }
