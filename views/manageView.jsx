@@ -50,7 +50,16 @@ class ManageView extends React.Component {
       );
     } else {
       var booleans = this.state.myBooleans.map(function(boolean) {
-        return <p><Link to={"/boolean/" + boolean._id}>{boolean.name}</Link></p>;
+        var deadStyle;
+
+        if (!boolean.alive) {
+          deadStyle = {
+            textDecoration: "line-through",
+            color: 'red'
+          }
+        }
+
+        return <p><Link style={deadStyle} to={"/boolean/" + boolean._id}>{boolean.name}</Link></p>;
       });
 
       return (

@@ -28,11 +28,13 @@ class FightView extends React.Component {
   render() {
     var opponentId = this.props.params.opponentId;
     var myBooleansList = this.state.myBooleans.map(function(boolean) {
-      return (
-        <LinkContainer key={boolean._id} to={"/fight-result/" + opponentId + "/" + boolean._id}>
-          <MenuItem>{boolean.name}</MenuItem>
-        </LinkContainer>
-      );
+      if (boolean.alive) {
+        return (
+          <LinkContainer key={boolean._id} to={"/fight-result/" + opponentId + "/" + boolean._id}>
+            <MenuItem>{boolean.name}</MenuItem>
+          </LinkContainer>
+        );
+      }
     });
 
     return (

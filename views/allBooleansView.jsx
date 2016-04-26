@@ -6,13 +6,22 @@ var getAllBooleans = require('./components/api').getAllBooleans;
 
 class BooleanRow extends React.Component {
   render() {
+    var deadStyle;
+
+    if (!this.props.boolean.alive) {
+      deadStyle = {
+        textDecoration: "line-through",
+        color: 'red'
+      }
+    }
+
     return (
       <Row className="rowItem">
         <Col lg={8}>
-          <Link to={"/boolean/" + this.props.boolean._id}>{this.props.children}</Link>
+          <Link style={deadStyle} to={"/boolean/" + this.props.boolean._id}>{this.props.children}</Link>
         </Col>
         <Col lg={4}>
-          <LinkContainer to={"/fight/" + this.props.boolean._id} disabled={this.props.boolean.ownedBy}>
+          <LinkContainer to={"/fight/" + this.props.boolean._id} disabled={this.props.boolean.ownedBy || !this.props.boolean.alive}>
             <Button bsStyle="success">Fight</Button>
           </LinkContainer>
         </Col>
