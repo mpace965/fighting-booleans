@@ -71,7 +71,7 @@ module.exports = function(app, passport) {
         if (obj.ownedBy) {
           Fboolean.deleteBoolean(req.params.id, function (err, results) {
             if (err) return console.error(err);
-            res.json(results);
+            res.redirect('/manage');
           });
         } else {
           res.json(obj);

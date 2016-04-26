@@ -71,6 +71,20 @@ module.exports.getFight = function(id1, id2, callback) {
   //   console.log("json 1 " + json1);
   // });
 
+  Fboolean.findById(id1, function (err, results) {
+      if (err) return console.error(err);
+      if (!result.alive) {
+        callback('error');
+      }
+  });
+    
+  Fboolean.findById(id2, function (err, results) {
+      if (err) return console.error(err);
+      if (!result.alive) {
+        callback('error');
+      }
+  });
+
   if (win) {
     booleanWin(id1);
     booleanLoss(id2);
@@ -139,7 +153,7 @@ booleanWin = function (booleanID) {
   );
 };
 
-// increment boolean loss by id
+// increment boolean loss by id and kills boolean if losses >= 10
 booleanLoss = function (booleanID) {
   Fboolean.update(
     { '_id' : booleanID},
@@ -147,8 +161,19 @@ booleanLoss = function (booleanID) {
     { 'new' : true },
     function (err, results) {
       if (err) return console.error(err);
-    }
-  );
+    });
+    
+    Fboolean.findById(booleanID, function (err, results) {
+      if (err) return console.error(err);
+      if (result.streaks.losses >= 10) {
+        Fboolean.update(
+          { '_id' : booleanID},
+          { 'alive' : false },
+          function (err, results) {
+            if (err) return console.error(err);
+          });
+        }
+    });
 };
 
 // watson calls
