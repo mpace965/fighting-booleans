@@ -19,8 +19,7 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 // mongodb client
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
+var mongoose = require('mongoose');
 
 // create a new express server
 var app = express();
@@ -38,24 +37,75 @@ app.listen(appEnv.port, '0.0.0.0', function() {
   console.log("server starting on " + appEnv.url);
 });
 
-var mongo = {
-  "url" : "mongodb://localhost:" + appEnv.port + "/db"
-};
-if (appEnv.VCAP_SERVICES) {
-  var env = JSON.parse(appEnv.VCAP_SERVICES);
+// mongodb connection
+//var url = 'mongodb://1f71ac31-c4f7-495a-be66-54a2b8759702:0ca3ef65-12c9-4855-998d-5470fdc00cea@192.155.243.23:10120/db';
+var mongoUrl = "mongodb://localhost:27017/db";
+if (process.env.VCAP_SERVICES) {
+  var env = JSON.parse(process.env.VCAP_SERVICES);
   if (env['mongodb-2.4']) {
-    mongo.url = env['mongodb-2.4'][0]['credentials']['uri'];
+    mongoUrl = env['mongodb-2.4'][0]['credentials'];
   }
 }
-
-// mongodb connection
-console.log("mongodb url = " + mongo.url);
-var url = 'mongodb://1f71ac31-c4f7-495a-be66-54a2b8759702:0ca3ef65-12c9-4855-998d-5470fdc00cea@192.155.243.23:10120/db';
-MongoClient.connect(url, function(err, db) {
-  assert.equal(null, err);
-  console.log("Connected correctly to mongodb server");
-  db.close();
+mongoose.connect(mongoUrl);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Connection successful!");
 });
+
+// fboolean stuff
+var fbooleanSchema = mongoose.Schema({
+  name : String,
+  alive : Boolean,
+  ownerID : String,
+  ownerName : String,
+  streaks : {
+    wins : Number,
+    losses : Number,
+    streak : Number
+  },
+  stats : [{
+    name : String
+    has : Boolean
+  }]
+});
+
+// copile the model
+var Fboolean = mongoose.model('Fboolean', fbooleanSchema);
+
+// insert new Fboolean
+var bitch = new Fboolean({
+  name : 'Bitch',
+  alive : true,
+  ownerID : 'ThomasFlaanel111',
+  ownerName : 'Thomas Fanella',
+  streaks : {
+    wins : 10,
+    losses : 10,
+    streak : 5
+  },
+  stats : [{
+    name : 'competency'
+    has : false
+  }]
+});
+console.log(bitch.name);
+
+// save the boolean
+bitch.save(function (err, bitch) {
+  if (err) return console.error(err);
+})
+
+// find methods
+Fboolean.find(function (err, arr) {
+  var map = arr.map(function (obj) {
+    return obj.name;
+  });
+  console.log(map);
+});
+
+// end mongoose tests
+
 
 var FACEBOOK_APP_ID = 265118990493490;
 var FACEBOOK_APP_SECRET = "21acbc29fac79d69188785a6f36b3b6c";
