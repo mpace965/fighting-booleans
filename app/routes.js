@@ -45,6 +45,22 @@ module.exports = function(app, passport) {
         res.json(results);
       });
     });
+
+    // create new
+    app.get('/api/createBoolean/:name', function(req, res) {
+      // console.log("user : " + req.user);
+      Fboolean.addBoolean(req.user, req.params.name, function (err, results) {
+        if (err) return console.error(err);
+        res.json(results);
+      });
+    });
+
+    // fightingbools
+    app.get('/api/fight-result/:id2/:id1', function(req, res) {
+      Fboolean.getFight(req.params.id1, req.params.id2, function(win) {
+        res.json({ won : win });
+      });
+    });
 };
 
 // route middleware to make sure a user is logged in
