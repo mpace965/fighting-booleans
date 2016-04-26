@@ -119,7 +119,7 @@ class BooleanView extends React.Component {
       <div>
         <Grid>
           <Col>
-            <PageHeader>{this.state.boolean.name}</PageHeader>
+            <PageHeader>{this.state.boolean.name} is {this.state.boolean.alive ? "alive" : "dead"}</PageHeader>
 
             <Row>
               <Col lg={8}>
