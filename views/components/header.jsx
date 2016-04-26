@@ -16,6 +16,9 @@ class Header extends React.Component {
           <LinkContainer to={"/booleans"}>
             <NavItem>Fight</NavItem>
           </LinkContainer>
+          <LinkContainer to={"/manage"}>
+            <NavItem>Manage</NavItem>
+          </LinkContainer>
         </Nav>
       </Navbar>
     );

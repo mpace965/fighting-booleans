@@ -8,6 +8,7 @@ import AllBooleansView from './allBooleansView';
 import BooleanView from './booleanView';
 import FightView from './fightView';
 import FightResultView from './fightResultView';
+import ManageView from './manageView';
 
 class Wrapper extends React.Component {
   render() {
@@ -24,6 +25,7 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={Wrapper}>
       <IndexRoute component={LoginView} />
+      <Route path="manage" component={ManageView} />
       <Route path="booleans" component={AllBooleansView} />
       <Route path="boolean/:id" component={BooleanView} />
       <Route path="fight/:opponentId" component={FightView} />
