@@ -7,7 +7,6 @@ var fbooleanSchema = mongoose.Schema({
   name : String,
   alive : Boolean,
   ownerID : String,
-  ownerName : String,
   streaks : {
     wins : Number,
     losses : Number,
@@ -18,6 +17,21 @@ var fbooleanSchema = mongoose.Schema({
     has : Boolean
   }]
 });
+
+// ALL THE stats
+var allStats = [
+  "strong",
+  "sad",
+  "angry",
+  "musical",
+  "stupid",
+  "smart",
+  "savvy",
+  "cocky",
+  "happy",
+  "resourceful",
+  "competent"
+];
 
 // create the model for users and expose it to our app
 var Fboolean = module.exports = mongoose.model('Fboolean', fbooleanSchema);
@@ -33,6 +47,40 @@ module.exports.getBoolean = function(id, callback) {
   Fboolean.findById(id, callback);
 };
 
+// get fight results
+module.exports.getFight = function(id1, id2, callback) {
+  var win = Math.random() < 0.5;
+  if (win) {
+    booleanWin(id1);
+    booleanLoss(id2);
+    callback(true);
+  }
+  else {
+    booleanWin(id2);
+    booleanLoss(id1);
+    callback(false);
+  }
+};
+
+// creating a new boolean
+module.exports.addBoolean = function(id, boolName, callback) {
+  var boolTemp = new Fboolean({
+    name : boolName,
+    alive : true,
+    ownerID : id,
+    streaks : {
+      wins : 0,
+      losses : 0,
+      streak : 0
+    },
+    stats : []
+  });
+  allStats.forEach(function (temp) {
+    boolTemp.stats.push({ name : temp, has : false, _id : null});
+  });
+  boolTemp.save(callback);
+};
+
 // set stat of a boolean
 module.exports.setBooleanStat = function(id, stat, callback) {
   Fboolean.update(
@@ -41,28 +89,6 @@ module.exports.setBooleanStat = function(id, stat, callback) {
     { 'new' : true },
     callback
   );
-};
-
-
-// create new boolean by user
-exports.createNewBooleanByUserID = function (userID, userName, booleanName) {
-  console.log('createNewBooleanByUserID');
-  var boolTemp = new Fboolean({
-    name : booleanName,
-    alive : true,
-    ownerID : userID,
-    ownerName : userName,
-    streaks : {
-      wins : 0,
-      losses : 0,
-      streak : 0
-    },
-    stats : []
-  });
-  boolTemp.save(function (err, results) {
-    if (err) return console.error(err);
-    console.log('createNewBooleanByUserID results = ' + results._id);
-  });
 };
 
 // get booleans for user id
@@ -87,27 +113,25 @@ exports.getBoolean = function (booleanID) {
 };
 
 // increment boolean win by id
-exports.booleanWin = function (booleanID) {
-  console.log('booleanWin');
-  Fboolean.findOneAndUpdate(
+booleanWin = function (booleanID) {
+  Fboolean.update(
     { '_id' : booleanID},
     { $inc : { 'streaks.wins' : 1, 'streaks.streak' : 1 }},
     { 'new' : true },
     function (err, results) {
-      console.log('booleanWin results = ' + results);
+      if (err) return console.error(err);
     }
   );
 };
 
 // increment boolean loss by id
-exports.booleanLoss = function (booleanID) {
-  console.log('booleanLoss');
-  Fboolean.findOneAndUpdate(
+booleanLoss = function (booleanID) {
+  Fboolean.update(
     { '_id' : booleanID},
     { 'streaks.streak' : 0, $inc : { 'streaks.losses' : 1 }},
     { 'new' : true },
     function (err, results) {
-      console.log('booleanLoss results = ' + results);
+      if (err) return console.error(err);
     }
   );
 };
@@ -128,6 +152,6 @@ exports.booleanDeath = function (booleanID) {
 // fighting two booleans returns true if id1 wins
 exports.fight = function (id1, id2) {
   console.log('fight');
-  var win = Math.random() < 0.5;
+
   console.log('fight results = ' + win);
 };
