@@ -1,47 +1,32 @@
 /*eslint-env node*/
 
-//------------------------------------------------------------------------------
-// node.js starter application for Bluemix
-//------------------------------------------------------------------------------
-
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
 var express = require('express');
+
+// create a new express server
+var app = express();
+
+var path = require('path');
 
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
 
-// account passport authentication
+// get the app environment from Cloud Foundry
+var appEnv = cfenv.getAppEnv();
+
 var passport = require('passport');
-
-// facebook strategy for passport
 var FacebookStrategy = require('passport-facebook').Strategy;
-
-// mongodb client
+var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
 
 // booleans require
 var booleans = require('./config/booleans.js');
 
-// create a new express server
-var app = express();
-
-// serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
-
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
-
-// start server on the specified port and binding host
-app.listen(appEnv.port, '0.0.0.0', function() {
-
-	// print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
-});
-
+//mongoose.connect('mongodb://localhost/users');
 // mongodb connection
-//var url = 'mongodb://1f71ac31-c4f7-495a-be66-54a2b8759702:0ca3ef65-12c9-4855-998d-5470fdc00cea@192.155.243.23:10120/db';
 var mongoUrl = "mongodb://localhost:27017/db";
 if (process.env.VCAP_SERVICES) {
   var env = JSON.parse(process.env.VCAP_SERVICES);
@@ -58,9 +43,23 @@ db.once('open', function() {
   console.log("Connection successful!");
 });
 
-// tests
-//createNewBooleanByUserID('ThomasFlaanel111', 'Thomas Fanella', 'Bitch21010');
-booleans.getBooleansByUserID('ThomasFlaanel111');
-booleans.booleanDeath('571ec4e11bd43fbc17a4df62');
-// booleans.booleanWin('571ec4e11bd43fbc17a4df62');
-//booleans.getBoolean('571ec4e11bd43fbc17a4df62');
+require('./config/passport')(passport);
+require('./app/routes.js')(app, passport);
+
+// serve the files out of ./public as our main files
+app.use(express.static(__dirname + '/public'));
+app.use(cookieParser());
+app.use(session({ secret: 'fightingbools' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('*', function (request, response){
+  response.sendFile(path.resolve(__dirname, './public', 'index.html'))
+})
+
+// start server on the specified port and binding host
+app.listen(appEnv.port, '0.0.0.0', function() {
+
+	// print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
+});
