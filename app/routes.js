@@ -15,6 +15,7 @@ module.exports = function(app, passport) {
     // route for facebook logout
     app.get('/logout', function(req, res) {
         req.logout();
+        res.redirect('/');
     });
 
     // route for facebook authentication and login
