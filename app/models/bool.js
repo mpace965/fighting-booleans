@@ -1,6 +1,7 @@
 // app/models/user.js
 // load the things we need
 var mongoose = require('mongoose');
+var http = require('http');
 
 // fboolean stuff
 var fbooleanSchema = mongoose.Schema({
@@ -55,16 +56,20 @@ module.exports.getBoolean = function(id, callback) {
 // get fight results
 module.exports.getFight = function(id1, id2, callback) {
   var win = Math.random() < 0.5;
-  var call = "http://gateway-a.watsonplatform.net/calls/text/TextGetEmotion?apikey=411671034f8b539058d0c8494f1c6d30543754d4&outputMode=json&text=";
-  var text = "";
-  Fboolean.findById(id1, function(err, results) {
-    if (err) concole.error(err);
-    results.stats.forEach(function(obj) {
-      text += "is " + (obj.has ? "" : "not ") + obj.name + ", ";
-      console.log("text 1 : " + text);
-    });
-  });
-  console.log("text : " + text);
+
+  // Fboolean.findById(id1, function(err, results) {
+  //   if (err) console.error(err);
+  //   var text1 = "";
+  //   var text2 = "";
+  //   results.stats.forEach(function(obj) {text1 += "is " + (obj.has ? "" : "not ") + obj.name + ", ";});
+  //   var uriComponent = encodeURIComponent(text1);
+  //   var json1;
+  //   getWatsonStuff(uriComponent, function(data) {
+  //     json1 = data;
+  //       console.log("json 2 " + json1);
+  //   });
+  //   console.log("json 1 " + json1);
+  // });
 
   if (win) {
     booleanWin(id1);
@@ -107,6 +112,11 @@ module.exports.setBooleanStat = function(id, stat, callback) {
   );
 };
 
+// delete boolean
+module.exports.deleteBoolean = function(id, callback) {
+  Fboolean.findOneAndRemove({ "_id" : id }, callback);
+};
+
 // boolean death by id
 module.exports.setBooleanDeath = function (booleanID, callback) {
   Fboolean.update(
@@ -139,4 +149,23 @@ booleanLoss = function (booleanID) {
       if (err) return console.error(err);
     }
   );
+};
+
+// watson calls
+getWatsonStuff = function (rest, callback) {
+  http.get({
+    host : "gateway-a.watsonplatform.net",
+    path : "/calls/text/TextGetEmotion?apikey=411671034f8b539058d0c8494f1c6d30543754d4&outputMode=json&text=" + rest
+  },
+  function (response) {
+    var body = '';
+    response.on('data', function(d) {
+      body += d;
+    });
+    response.on('end', function() {
+      // Data reception is done, do whatever with it!
+      var parsed = JSON.parse(body);
+      callback(parsed);
+    });
+  });
 };

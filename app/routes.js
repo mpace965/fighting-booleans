@@ -62,6 +62,14 @@ module.exports = function(app, passport) {
       });
     });
 
+    // get boolean by id
+    app.get('/api/boolean/delete/:id', function(req, res) {
+      Fboolean.deleteBoolean(req.params.id, function (err, results) {
+        if (err) return console.error(err);
+        res.json(results);
+      });
+    });
+
     // buy
     app.get('/api/boolean/buystat/:id/:stat', function(req, res) {
       Fboolean.setBooleanStat(req.params.id, req.params.stat, function (err, results) {
