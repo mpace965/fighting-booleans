@@ -6,7 +6,6 @@ var express = require('express');
 
 // create a new express server
 var app = express();
-
 var path = require('path');
 
 // cfenv provides access to your Cloud Foundry environment
@@ -50,8 +49,11 @@ app.use(session({ secret: 'fightingbools' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+require('./app/routes.js')(app, passport);
+
+// handle every other route with index.html
 app.get('*', function (request, response){
-  response.sendFile(path.resolve(__dirname, './public', 'index.html'))
+  response.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 // start server on the specified port and binding host
