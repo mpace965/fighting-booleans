@@ -2,17 +2,21 @@
 
 module.exports = function(app, passport) {
 
+    // gets the user id
     app.get('/getUserID', isLoggedIn, function (req, res) {
         res.send(req.user.id);
     });
     
+    // check if user is authenticated
     app.get('/auth/isAuthenticated', function (req, res) {
         res.json({ auth: req.isAuthenticated() });
     })
+    
+    // route for facebook logout
+    app.get('/logout', function(req, res) {
+        req.logout();
+    });
 
-    // =====================================
-    // FACEBOOK ROUTES =====================
-    // =====================================
     // route for facebook authentication and login
     app.get('/auth/facebook', passport.authenticate('facebook'));
 
