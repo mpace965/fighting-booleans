@@ -40,14 +40,15 @@ class StatRow extends React.Component {
         dataType: 'json',
         cache: false,
         success: function(data) {
-          if (data.bought) {
-            this.setState({has: true});
-          } else {
-            this.props.showModal();
-          }
+          this.setState({has: true});
+          // if (data.bought) {
+          //   this.setState({has: true});
+          // } else {
+          //   this.props.showModal();
+          // }
         }.bind(this),
         error: function(xhr, status, err) {
-          this.props.showModal();
+          // this.props.showModal();
           console.error('/api/booleans/buystat/' + this.props.id + '/' + this.props.stat.name, status, err.toString());
         }.bind(this)
     });
@@ -57,7 +58,7 @@ class StatRow extends React.Component {
     return (
       <Row className="rowItem">
         <Col lg={8}>
-          <p>Is {this.props.stat.has ? "" : "not"} {this.props.stat.name}</p>
+          <p>Is {this.state.has ? "" : "not"} {this.props.stat.name}</p>
         </Col>
         <Col lg={4}>
           <Button bsStyle="success" disabled={this.state.has || !this.props.alive} onClick={this.buyStatFromServer}>Buy</Button>
