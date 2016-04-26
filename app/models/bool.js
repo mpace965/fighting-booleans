@@ -1,3 +1,5 @@
+// app/models/user.js
+// load the things we need
 var mongoose = require('mongoose');
 
 // fboolean stuff
@@ -17,8 +19,30 @@ var fbooleanSchema = mongoose.Schema({
   }]
 });
 
-// copile the model
-var Fboolean = mongoose.model('Fboolean', fbooleanSchema);
+// create the model for users and expose it to our app
+var Fboolean = module.exports = mongoose.model('Fboolean', fbooleanSchema);
+
+// api endpoints
+// get all booleans
+module.exports.getAllBooleans = function(callback) {
+  Fboolean.find(callback);
+};
+
+// get boolean by id
+module.exports.getBoolean = function(id, callback) {
+  Fboolean.findById(id, callback);
+};
+
+// set stat of a boolean
+module.exports.setBooleanStat = function(id, stat, callback) {
+  Fboolean.update(
+    { "_id" : id, "stats.name" : stat},
+    { $set: { "stats.$.has" : true }},
+    { 'new' : true },
+    callback
+  );
+};
+
 
 // create new boolean by user
 exports.createNewBooleanByUserID = function (userID, userName, booleanName) {
@@ -99,4 +123,11 @@ exports.booleanDeath = function (booleanID) {
       console.log('booleanDeath results = ' + results);
     }
   );
+};
+
+// fighting two booleans returns true if id1 wins
+exports.fight = function (id1, id2) {
+  console.log('fight');
+  var win = Math.random() < 0.5;
+  console.log('fight results = ' + win);
 };

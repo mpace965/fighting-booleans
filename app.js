@@ -22,9 +22,6 @@ var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 
-// booleans require
-var booleans = require('./config/booleans.js');
-
 //mongoose.connect('mongodb://localhost/users');
 // mongodb connection
 var mongoUrl = "mongodb://localhost:27017/db";
