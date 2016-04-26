@@ -38,7 +38,9 @@ class Header extends React.Component {
 
     if (this.state.auth) {
       signOut = (
-        <NavItem href="/logout">Log Out</NavItem>
+        <Nav pullRight>
+          <NavItem href="/logout">Log Out</NavItem>
+        </Nav>
       );
     }
 
@@ -56,8 +58,8 @@ class Header extends React.Component {
           <LinkContainer to={"/manage"}>
             <NavItem>Manage</NavItem>
           </LinkContainer>
-          {signOut}
         </Nav>
+        {signOut}
       </Navbar>
     );
   }
