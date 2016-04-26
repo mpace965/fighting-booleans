@@ -1,3 +1,7 @@
 .rowItem {
   margin: 10px
 }
+
+.pullRight {
+  float: right;
+}

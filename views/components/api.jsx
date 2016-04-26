@@ -42,3 +42,10 @@ export function getMyBooleans(callback) {
 
   get('/api/booleans/mine', callback, dummy);
 }
+
+export function createBoolean(name) {
+  $.ajax({
+      url: '/api/createBoolean/' + name,
+      method: 'PUT'
+  });
+}
