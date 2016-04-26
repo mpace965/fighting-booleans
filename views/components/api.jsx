@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-function get(url, callback, dummyData) {
+function get(url, callback) {
   $.ajax({
       url: url,
       dataType: 'json',
@@ -9,8 +9,7 @@ function get(url, callback, dummyData) {
         callback(data);
       },
       error: function(xhr, status, err) {
-        callback(dummyData);
-        // console.error(url, status, err.toString());
+        console.error(url, status, err.toString());
       }
   });
 }
@@ -25,7 +24,7 @@ export function getBoolean(id, callback) {
     stats: [{name: "strong", has: false}, {name: "happy", has: false}, {name: "smart", has: false}, {name: "a dank memer", has: true}],
     alive: true};
 
-  get('/api/boolean/' + id, callback, bool);
+  get('/api/booleans/' + id, callback, bool);
 }
 
 export function getMyBooleans(callback) {

@@ -36,10 +36,9 @@ class StatRow extends React.Component {
 
   buyStatFromServer() {
     $.ajax({
-        url: '/api/boolean/' + this.props.id + '/buyStat',
+        url: '/api/booleans/buystat/' + this.props.id + '/' + this.props.stat.name,
         dataType: 'json',
         cache: false,
-        data: {userId: 0, stat: this.props.stat.name},
         success: function(data) {
           if (data.bought) {
             this.setState({has: true});
@@ -49,7 +48,7 @@ class StatRow extends React.Component {
         }.bind(this),
         error: function(xhr, status, err) {
           this.props.showModal();
-          // console.error('/api/boolean/' + this.props.id + '/buyStat', status, err.toString());
+          console.error('/api/booleans/buystat/' + this.props.id + '/' + this.props.stat.name, status, err.toString());
         }.bind(this)
     });
   }
