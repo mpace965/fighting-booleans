@@ -64,9 +64,18 @@ module.exports = function(app, passport) {
 
     // get boolean by id
     app.get('/api/boolean/delete/:id', isLoggedIn, function(req, res) {
-      Fboolean.deleteBoolean(req.params.id, function (err, results) {
+      Fboolean.getBoolean(req.params.id, function (err, results) {
         if (err) return console.error(err);
-        res.json(results);
+        var obj = populateOwnerObj(results, req.user.id);
+        
+        if (obj.ownedBy) {
+          Fboolean.deleteBoolean(req.params.id, function (err, results) {
+            if (err) return console.error(err);
+            res.json(results);
+          });
+        } else {
+          res.json(obj);
+        }
       });
     });
 
