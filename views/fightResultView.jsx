@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Col, Row, PageHeader } from 'react-bootstrap';
+import { browserHistory } from 'react-router';
 var getFightResult = require('./components/api').getFightResult;
 var getBoolean = require('./components/api').getBoolean;
 
@@ -26,6 +27,10 @@ class FightResultView extends React.Component {
 
   render() {
     var resultMessage;
+
+    if (this.state.won == 'error') {
+      browserHistory.push('/');
+    }
 
     if (this.state.won) {
       resultMessage = <p>You won!</p>;
